@@ -18,8 +18,33 @@ internal class SongDescriptionHelperImpl : SongDescriptionHelper {
                 }\n" +
                         "Artist: ${song.artistName}\n" +
                         "Album: ${song.albumName}\n" +
-                        "Year: ${song.year}"
+                        "Release date: ${getFormattedReleaseDate(song.releaseDate, song.releaseDatePrecision)}" +
+                        "Realese date precision: ${song.releaseDatePrecision}"
             else -> "Song not found"
         }
+    }
+}
+
+private fun getFormattedReleaseDate(releaseDate: String, precision: String): String {
+    return when (precision) {
+        "day" -> {
+            val fecha = releaseDate.split("-")
+            val day = fecha[2]
+            val month = fecha[1]
+            val year = fecha[0]
+            " $day/$month/$year"
+        }
+        "month" -> {
+            val fecha = releaseDate.split("-")
+            val month = fecha[1]
+            val year = fecha[0]
+            " $month/$year"
+        }
+        "year" -> {
+            val fecha = releaseDate.split("-")
+            val year = fecha[0]
+            " $year"
+        }
+        else -> ""
     }
 }
