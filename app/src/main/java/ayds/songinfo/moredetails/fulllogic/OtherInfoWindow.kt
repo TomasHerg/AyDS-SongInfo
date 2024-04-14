@@ -64,19 +64,11 @@ class OtherInfoWindow : Activity() {
 
                         // save to DB  <o/
                         val biographyForDB = articleBiography
-                        Thread {
-                            dataBase!!.ArticleDao().insertArticle(
-                                ArticleEntity(
-                                    artistName, biographyForDB, url.asString
-                                )
-                            )
-                        }.start()
+                        saveBiographyOnDB(artistName, biographyForDB, url.asString)
                     }
                     val urlString = url.asString
                     findViewById<View>(R.id.openUrlButton1).setOnClickListener {
-                        val intent = Intent(Intent.ACTION_VIEW)
-                        intent.setData(Uri.parse(urlString))
-                        startActivity(intent)
+                        val intent = initializeIntent(urlString)
                     }
                 } catch (e1: IOException) {
                     Log.e("TAG", "Error $e1")
@@ -87,10 +79,7 @@ class OtherInfoWindow : Activity() {
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Lastfm_logo.svg/320px-Lastfm_logo.svg.png"
             Log.e("TAG", "Get Image from $imageUrl")
             val finalText = articleBiography
-            runOnUiThread {
-                Picasso.get().load(imageUrl).into(findViewById<View>(R.id.imageView1) as ImageView)
-                otherInfoTextPanel!!.text = Html.fromHtml(finalText)
-            }
+            showInfoOnUI(imageUrl, otherInfoTextPanel, finalText)
         }.start()
     }
 
@@ -98,27 +87,42 @@ class OtherInfoWindow : Activity() {
     private fun open(artist: String?) {
         dataBase =
             databaseBuilder(this, ArticleDatabase::class.java, "database-name-thename").build()
+        threadGetArticleByArtisName(dataBase)
+        getARtistInfo(artist)
+    }
+
+    private fun threadGetArticleByArtisName(dataBase: ArticleDatabase?){
         Thread {
             dataBase!!.ArticleDao().insertArticle(ArticleEntity("test", "sarasa", ""))
             Log.e("TAG", "" + dataBase!!.ArticleDao().getArticleByArtistName("test"))
             Log.e("TAG", "" + dataBase!!.ArticleDao().getArticleByArtistName("nada"))
         }.start()
-        getARtistInfo(artist)
     }
 
     companion object {
         const val ARTIST_NAME_EXTRA = "artistName"
         fun textToHtml(text: String, term: String?): String {
+            val builder = initializeStringBuilder()
+            val textWithBold = setTextWithBold(text, term)
+            return appendTextOnBuilder(builder, textWithBold)
+        }
+
+        private fun initializeStringBuilder(): StringBuilder{
             val builder = StringBuilder()
             builder.append("<html><div width=400>")
             builder.append("<font face=\"arial\">")
-            val textWithBold = text
-                .replace("'", " ")
-                .replace("\n", "<br>")
-                .replace(
-                    "(?i)$term".toRegex(),
-                    "<b>" + term!!.uppercase(Locale.getDefault()) + "</b>"
-                )
+            return builder
+        }
+
+        private fun setTextWithBold(text: String, term: String?) : String = text
+            .replace("'", " ")
+            .replace("\n", "<br>")
+            .replace(
+                "(?i)$term".toRegex(),
+                "<b>" + term!!.uppercase(Locale.getDefault()) + "</b>"
+            )
+
+        private fun appendTextOnBuilder(builder: StringBuilder, textWithBold: String): String{
             builder.append(textWithBold)
             builder.append("</font></div></html>")
             return builder.toString()
@@ -137,6 +141,31 @@ class OtherInfoWindow : Activity() {
         intent.setData(Uri.parse(url))
         startActivity(intent)
         return intent;
+    }
+
+    private fun saveBiographyOnDB(artistName: String, biographyForDB: String, url: String){
+        Thread {
+            dataBase!!.ArticleDao().insertArticle(
+                ArticleEntity(
+                    artistName, biographyForDB, url
+                )
+            )
+        }.start()
+    }
+
+    private fun showInfoOnUI(imageUrl : String, otherInfoTextPanel: TextView?, finalText: String){
+        runOnUiThread {
+            showImageUrl(imageUrl)
+            setTextOnPanel(otherInfoTextPanel, finalText)
+        }
+    }
+
+    private fun showImageUrl(imageUrl: String){
+        Picasso.get().load(imageUrl).into(findViewById<View>(R.id.imageView1) as ImageView)
+    }
+
+    private fun setTextOnPanel(otherInfoTextPanel: TextView?, finalText: String){
+        otherInfoTextPanel!!.text= (Html.fromHtml(finalText))
     }
 
 }
