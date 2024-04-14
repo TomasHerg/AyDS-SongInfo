@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.RoomDatabase
 
-@Database(entities = [ArticleEntity::class], version = 2)
+@Database(entities = [ArticleEntity::class], version = 2, exportSchema = false)
 abstract class ArticleDatabase : RoomDatabase() {
     abstract fun ArticleDao(): ArticleDao
 }
