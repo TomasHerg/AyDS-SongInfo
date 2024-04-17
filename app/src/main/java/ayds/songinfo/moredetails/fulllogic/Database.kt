@@ -1,5 +1,6 @@
 package ayds.songinfo.moredetails.fulllogic
 
+import androidx.room.AutoMigration
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Entity
@@ -9,7 +10,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.RoomDatabase
 
-@Database(entities = [ArticleEntity::class], version = 2, exportSchema = false)
+@Database(entities = [ArticleEntity::class], version = 1)
 abstract class ArticleDatabase : RoomDatabase() {
     abstract fun ArticleDao(): ArticleDao
 }
