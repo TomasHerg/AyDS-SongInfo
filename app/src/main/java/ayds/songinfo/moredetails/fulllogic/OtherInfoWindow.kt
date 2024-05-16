@@ -10,9 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.room.Room.databaseBuilder
 import ayds.songinfo.R
-import ayds.songinfo.moredetails.fulllogic.data.external.LastFMAPI
-import ayds.songinfo.moredetails.fulllogic.data.local.ArticleDatabase
-import ayds.songinfo.moredetails.fulllogic.data.local.ArticleEntity
+import ayds.songinfo.moredetails.data.external.LastFMAPI
+import ayds.songinfo.moredetails.data.local.ArticleDatabase
+import ayds.songinfo.moredetails.data.local.ArticleEntity
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.squareup.picasso.Picasso
