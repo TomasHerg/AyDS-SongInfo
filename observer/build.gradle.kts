@@ -1,19 +1,18 @@
 plugins {
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.ksp)
 }
-
 android {
-    namespace = "ayds.observer"
+    namespace = "ayds.songinfo"
     compileSdk = 34
-
     defaultConfig {
+        applicationId = "ayds.songinfo"
         minSdk = 26
-
+        versionCode = 1
+        versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -28,13 +27,21 @@ android {
         jvmTarget = "1.8"
     }
 }
-
 dependencies {
-
+    implementation(project(":observer"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter)
+    implementation(libs.gson)
+    implementation(libs.picasso)
+    implementation(libs.androidx.room)
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+
+    ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
