@@ -34,7 +34,7 @@ class ArtistBiographyDescriptionHelperImplTest {
         // Act
         val result = descriptionHelper.getDescription(artistBiography)
 
-        Assert.assertTrue(result.contains("The artist is known for...") && !result.contains("[*]"))
+        Assert.assertTrue(result.contains("Biografia del artista") && !result.contains("[*]"))
     }
 
 }
