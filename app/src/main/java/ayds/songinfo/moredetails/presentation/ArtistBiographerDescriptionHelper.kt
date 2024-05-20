@@ -19,7 +19,7 @@ internal class ArtistBiographyDescriptionHelperImpl : ArtistBiographyDescription
 
     private fun getTextBiography(artistBiography: ArtistBiography): String {
         val prefix = if (artistBiography.isLocallyStored) "[*]" else ""
-        val text = artistBiography.biography.replace("\\n", "\n")
+        val text = artistBiography.biography
         return "$prefix$text"
     }
 
@@ -28,6 +28,7 @@ internal class ArtistBiographyDescriptionHelperImpl : ArtistBiographyDescription
         builder.append(HEADER)
         val textWithBold = text
             .replace("'", " ")
+            .replace("\\n", "\n")
             .replace("\n", "<br>")
             .replace(
                 "(?i)$term".toRegex(),
