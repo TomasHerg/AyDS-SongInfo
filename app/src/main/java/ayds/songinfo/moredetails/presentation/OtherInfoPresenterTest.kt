@@ -2,12 +2,9 @@ package ayds.songinfo.moredetails.presentation
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.Assert
 import org.junit.Test
-import ayds.observer.Observable
 import ayds.observer.Subject
 import ayds.songinfo.moredetails.domain.OtherInfoRepository
-import ayds.songinfo.moredetails.presentation.ArtistBiographyUiState
 
 class OtherInfoPresenterTest {
 
@@ -15,7 +12,7 @@ class OtherInfoPresenterTest {
 
     private val artistBiographyDescriptionHelper: ArtistBiographyDescriptionHelper = mockk(relaxUnitFun = true)
 
-    private val otherInfoPresenter: OtherInfoPresenterImpl(repository, artistBiographyDescriptionHelper) = mockk{
+    private val otherInfoPresenter: OtherInfoPresenterImpl = mockk(){
         every { artistBiographyObservable } returns Subject<ArtistBiographyUiState>
     }
 
