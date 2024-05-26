@@ -7,7 +7,7 @@ class ArtistBiographyDescriptionHelperImplTest {
     private val descriptionHelper = ArtistBiographyDescriptionHelperImpl()
 
     @Test
-    fun `getTextBiography should add prefix if isLocallyStored is true`() {
+    fun 'getTextBiography should add prefix if isLocallyStored is true'() {
 
         val artistBiography = ArtistBiography(
             "Nombre de artista",
@@ -22,7 +22,7 @@ class ArtistBiographyDescriptionHelperImplTest {
     }
 
     @Test
-    fun `getTextBiography should not add prefix if isLocallyStored is false`() {
+    fun 'getTextBiography should not add prefix if isLocallyStored is false'() {
 
         val artistBiography = ArtistBiography(
             "Nombre de artista",

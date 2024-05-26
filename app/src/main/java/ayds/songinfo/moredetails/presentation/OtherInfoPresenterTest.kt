@@ -1,17 +1,15 @@
 package ayds.songinfo.moredetails.presentation
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import org.junit.Test
-import ayds.observer.Subject
 import ayds.songinfo.moredetails.domain.ArtistBiography
 import ayds.songinfo.moredetails.domain.OtherInfoRepository
 
 class OtherInfoPresenterTest {
 
-    private val otherInfoRepository : OtherInfoRepository = mockk(relaxUnitFun = true)
+    private val otherInfoRepository : OtherInfoRepository = mockk()
 
-    private val artistBiographyDescriptionHelper: ArtistBiographyDescriptionHelper = mockk(relaxUnitFun = true)
+    private val artistBiographyDescriptionHelper: ArtistBiographyDescriptionHelper = mockk()
 
     private val otherInfoPresenter: OtherInfoPresenter = OtherInfoPresenterImpl(otherInfoRepository, artistBiographyDescriptionHelper)
 
@@ -33,7 +31,6 @@ class OtherInfoPresenterTest {
 
         val result = ArtistBiographyUiState("artistName", "description", "articleUrl")
 
-        //Assert.assertEquals(artistBiography, artistBiographyTester)
     }
 
 }

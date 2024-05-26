@@ -1,6 +1,6 @@
-package ayds.songinfo.moredetails.data.external
+package ayds.artist.external.externalSourceInfo
 
-import ayds.songinfo.moredetails.domain.ArtistBiography
+import app.src.main.java.ayds.songinfo.moredetails.domain.ArtistBiography
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 

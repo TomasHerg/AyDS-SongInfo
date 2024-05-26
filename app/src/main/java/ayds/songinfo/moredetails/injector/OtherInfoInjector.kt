@@ -3,20 +3,18 @@ package ayds.songinfo.moredetails.injector
 import android.content.Context
 import androidx.room.Room
 import ayds.songinfo.moredetails.data.OtherInfoRepositoryImpl
-import ayds.songinfo.moredetails.data.external.LastFMAPI
-import ayds.songinfo.moredetails.data.external.LastFMToArtistBiographyResolverImpl
-import ayds.songinfo.moredetails.data.external.OtherInfoServiceImpl
+import external.OtherInfoServiceInjector //quiero importar el injector pero no me deja
 import ayds.songinfo.moredetails.data.local.ArticleDatabase
 import ayds.songinfo.moredetails.data.local.OtherInfoLocalStorageImpl
 import ayds.songinfo.moredetails.presentation.ArtistBiographyDescriptionHelperImpl
 import ayds.songinfo.moredetails.presentation.OtherInfoPresenter
 import ayds.songinfo.moredetails.presentation.OtherInfoPresenterImpl
+//estos dos imports deberían borrarse cuando funcione
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 
 private const val ARTICLE_BD_NAME = "database-article"
-private const val LASTFM_BASE_URL = "https://ws.audioscrobbler.com/2.0/"
 
 object OtherInfoInjector {
 
@@ -27,6 +25,7 @@ object OtherInfoInjector {
         val articleDatabase =
             Room.databaseBuilder(context, ArticleDatabase::class.java, ARTICLE_BD_NAME).build()
 
+        //a partir de acá se reemplaza
         val retrofit = Retrofit.Builder()
             .baseUrl(LASTFM_BASE_URL)
             .addConverterFactory(ScalarsConverterFactory.create())
@@ -35,6 +34,8 @@ object OtherInfoInjector {
 
         val lastFMToArtistBiographyResolver = LastFMToArtistBiographyResolverImpl()
         val otherInfoService = OtherInfoServiceImpl(lastFMAPI, lastFMToArtistBiographyResolver)
+        //hasta acá
+
         val articleLocalStorage = OtherInfoLocalStorageImpl(articleDatabase)
 
         val repository = OtherInfoRepositoryImpl(articleLocalStorage, otherInfoService)

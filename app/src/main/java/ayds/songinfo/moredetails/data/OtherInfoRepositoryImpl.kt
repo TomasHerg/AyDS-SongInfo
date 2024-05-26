@@ -1,6 +1,6 @@
 package ayds.songinfo.moredetails.data
 
-import ayds.songinfo.moredetails.data.external.OtherInfoService
+import external.src.main.java.ayds.artist.external.externalSourceInfo.OtherInfoService
 import ayds.songinfo.moredetails.data.local.OtherInfoLocalStorage
 import ayds.songinfo.moredetails.domain.ArtistBiography
 import ayds.songinfo.moredetails.domain.OtherInfoRepository
