@@ -3,6 +3,6 @@ package ayds.songinfo.moredetails.domain
 data class Card(
     val description : String,
     val infoUrl : String,
-    val source : String,
-    val sourceLogoUrl : String
+    var source : String,
+    var sourceLogoUrl : String
 )

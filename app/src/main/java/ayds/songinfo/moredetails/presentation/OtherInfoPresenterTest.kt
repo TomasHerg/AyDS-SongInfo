@@ -9,7 +9,7 @@ class OtherInfoPresenterTest {
 
     private val otherInfoRepository : OtherInfoRepository = mockk()
 
-    private val artistBiographyDescriptionHelper: ArtistBiographyDescriptionHelper = mockk()
+    private val artistBiographyDescriptionHelper: ArtistCardDescriptionHelper = mockk()
 
     private val otherInfoPresenter: OtherInfoPresenter = OtherInfoPresenterImpl(otherInfoRepository, artistBiographyDescriptionHelper)
 
