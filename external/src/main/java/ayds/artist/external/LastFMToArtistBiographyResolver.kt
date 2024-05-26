@@ -1,4 +1,4 @@
-package ayds.artist.external.externalSourceInfo
+package ayds.artist.external
 
 import app.src.main.java.ayds.songinfo.moredetails.domain.ArtistBiography
 import com.google.gson.Gson

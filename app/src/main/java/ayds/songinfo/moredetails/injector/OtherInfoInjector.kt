@@ -3,7 +3,7 @@ package ayds.songinfo.moredetails.injector
 import android.content.Context
 import androidx.room.Room
 import ayds.songinfo.moredetails.data.OtherInfoRepositoryImpl
-import external.OtherInfoServiceInjector //quiero importar el injector pero no me deja
+import external.src.moan.java.ayds.artist.external.OtherInfoServiceInjector //quiero importar el injector pero no me deja
 import ayds.songinfo.moredetails.data.local.ArticleDatabase
 import ayds.songinfo.moredetails.data.local.OtherInfoLocalStorageImpl
 import ayds.songinfo.moredetails.presentation.ArtistBiographyDescriptionHelperImpl
@@ -25,18 +25,9 @@ object OtherInfoInjector {
         val articleDatabase =
             Room.databaseBuilder(context, ArticleDatabase::class.java, ARTICLE_BD_NAME).build()
 
-        //a partir de acá se reemplaza
-        val retrofit = Retrofit.Builder()
-            .baseUrl(LASTFM_BASE_URL)
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .build()
-        val lastFMAPI = retrofit.create(LastFMAPI::class.java)
-
-        val lastFMToArtistBiographyResolver = LastFMToArtistBiographyResolverImpl()
-        val otherInfoService = OtherInfoServiceImpl(lastFMAPI, lastFMToArtistBiographyResolver)
-        //hasta acá
-
         val articleLocalStorage = OtherInfoLocalStorageImpl(articleDatabase)
+
+        val otherInfoService = OtherInfoServiceInjector.otherInfoService
 
         val repository = OtherInfoRepositoryImpl(articleLocalStorage, otherInfoService)
 

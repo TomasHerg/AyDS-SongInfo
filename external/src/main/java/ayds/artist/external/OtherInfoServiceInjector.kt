@@ -1,10 +1,7 @@
-package ayds.artist.external.externalSourceInfo.OtherInfoServiceInjector
+package ayds.artist.external
 
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import ayds.artist.external.externalSourceInfo.LastFMAPI
-import ayds.artist.external.externalSourceInfo.LastFMToArtistBiographyResolver
-import ayds.artist.external.externalSourceInfo.OtherInfoService
 
 private const val LASTFM_BASE_URL = "https://ws.audioscrobbler.com/2.0/"
 
