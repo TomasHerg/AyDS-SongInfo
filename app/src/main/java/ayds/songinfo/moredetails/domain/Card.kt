@@ -1,6 +1,8 @@
 package ayds.songinfo.moredetails.domain
 
-class Card {
-
-
-}
+data class Card(
+    val description : String,
+    val infoUrl : String,
+    val source : String,
+    val sourceLogoUrl : String
+)
