@@ -44,6 +44,8 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.picasso)
     implementation(libs.androidx.room)
+    implementation(project(":external"))
+    implementation("junit:junit:4.12")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 
     ksp(libs.androidx.room.compiler)

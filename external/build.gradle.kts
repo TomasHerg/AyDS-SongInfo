@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.retrofit.converter)
     implementation(libs.gson)
     implementation(project(":app"))
+    implementation(project(":external"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

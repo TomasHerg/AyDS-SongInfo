@@ -1,6 +1,6 @@
-package ayds.artist.external
+package ayds.artist.external.lastfm
 
-data class LastFMBiography(
+data class LastFmBiography(
     val artistName: String,
     val biography: String,
     val articleUrl: String

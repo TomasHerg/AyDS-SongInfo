@@ -1,75 +1,53 @@
-package ayds.songinfo.moredetails.domain
+package ayds.songinfo.moredetails.data
 
-import ayds.songinfo.moredetails.data.OtherInfoRepositoryImpl
-import ayds.songinfo.moredetails.data.external.OtherInfoService
 import ayds.songinfo.moredetails.data.local.OtherInfoLocalStorage
+import ayds.songinfo.moredetails.domain.Card
+import ayds.songinfo.moredetails.domain.OtherInfoRepository
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Assert
 import org.junit.Test
-
 class OtherInfoRepositoryTest {
+    private val otherInfoLocalStorage: OtherInfoLocalStorage = mockk()
+    private val otherInfoService: ayds.artist.external.OtherInfoService = mockk()
+    private val otherInfoRepository: OtherInfoRepository = OtherInfoRepositoryImpl(otherInfoLocalStorage, otherInfoService)
 
-    private val localRepository : OtherInfoLocalStorage = mockk()
-    private val otherInfoService : OtherInfoService = mockk()
+    @Test
+    fun `on getArtistInfo call getArticle from local storage`() {
+        val card = Card("artist", "biography", "url", false)
+        every { otherInfoLocalStorage.getCard("artist") } returns card
 
-    private lateinit var otherInfoRepository : OtherInfoRepository
+        val result = otherInfoRepository.getCard("artist")
 
-    @Before
-    fun setUp() {
-        otherInfoRepository = OtherInfoRepositoryImpl(localRepository, otherInfoService)
+        Assert.assertEquals(card, result)
+        Assert.assertTrue(result.isLocallyStored)
     }
 
     @Test
-    fun 'getArtisInfo should return a string if the song exists locally'(){
+    fun `on getArtistInfo call getArticle from service`() {
+        val card = Card("artist", "biography", "url", false)
+        every { otherInfoLocalStorage.getCard("artist") } returns null
+        every { otherInfoService.getArticle("artist") } returns card
+        every { otherInfoLocalStorage.insertCard(card) } returns Unit
 
-        val localArtistBiography = ArtistBiography(
-            "artist name",
-            "local artist biography",
-            "http://url.com",
-            true
-        )
+        val result = otherInfoRepository.getCard("artist")
 
-        every {otherInfoRepository.getArtistInfo(localArtistBiography.artistName) returns localArtistBiography}
-
-        val expectedResultLocal = "[*]"+ localArtistBiography.biography
-        val resultLocalBiography = otherInfoRepository.getArtistInfo(localArtistBiography.artistName).biography
-
-        Assert.assertEquals(expectedResultLocal, resultLocalBiography)
+        Assert.assertEquals(card, result)
+        Assert.assertFalse(result.isLocallyStored)
+        verify { otherInfoLocalStorage.insertCard(card) }
     }
 
     @Test
-    fun 'getArtisInfo should return a string if the song exists remotelly and not locally'(){
+    fun `on empty bio, getArtistInfo call getArticle from service`() {
+        val card = Card("artist", "", "url", false)
+        every { otherInfoLocalStorage.getCard("artist") } returns null
+        every { otherInfoService.getArticle("artist") } returns card
 
-        val localArtistBiography = ArtistBiography(
-            "artist name",
-            "local artist biography",
-            "http://url.com",
-            false
-        )
+        val result = otherInfoRepository.getCard("artist")
 
-        every {otherInfoRepository.getArtistInfo(localArtistBiography.artistName)} returns localArtistBiography
-
-        val resultRemoteBiography = otherInfoRepository.getArtistInfo(localArtistBiography.artistName)
-
-        Assert.assertEquals(localArtistBiography.artistName, resultRemoteBiography)
+        Assert.assertEquals(card, result)
+        Assert.assertFalse(result.isLocallyStored)
+        verify(inverse = true) { otherInfoLocalStorage.insertCard(card) }
     }
-
-    @Test
-    fun 'when the biography is not stored locally it should be inserted locally'(){
-
-        val artistBiography = ArtistBiography(
-            "artist name",
-            "local artist biography",
-            "http://url.com",
-            false
-        )
-
-        every {otherInfoRepository.getArtistInfo(artistBiography.artistName)} returns artistBiography
-
-        val firstSearch = otherInfoRepository.getArtistInfo(artistBiography.artistName)
-        //ahora debería estar almacenada localmente
-        val secondSearch = otherInfoRepository.getArtistInfo(artistBiography.artistName)
-
-        Assert.assertEquals("[*]"+firstSearch.biography, secondSearch.biography)
-    }
-
 }
